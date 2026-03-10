@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>RuangCurhat</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+background:#f5f6ff;
+display:flex;
+flex-direction:column;
+height:100vh;
+}
+
+header{
+background:#6C63FF;
+color:white;
+padding:15px;
+text-align:center;
+font-size:20px;
+font-weight:bold;
+}
+
+#chat{
+flex:1;
+overflow-y:auto;
+padding:15px;
+}
+
+.msg{
+display:flex;
+margin:10px 0;
+}
+
+.user{
+justify-content:flex-end;
+}
+
+.bubble{
+padding:10px 14px;
+border-radius:12px;
+max-width:70%;
+font-size:14px;
+}
+
+.user .bubble{
+background:#DCF8C6;
+}
+
+.ai .bubble{
+background:white;
+}
+
+.avatar{
+width:35px;
+height:35px;
+border-radius:50%;
+background:#6C63FF;
+color:white;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:14px;
+margin-right:8px;
+}
+
+.user .avatar{
+display:none;
+}
+
+#inputArea{
+display:flex;
+padding:10px;
+background:white;
+}
+
+#text{
+flex:1;
+padding:10px;
+border-radius:8px;
+border:1px solid #ccc;
+}
+
+button{
+background:#6C63FF;
+border:none;
+color:white;
+padding:10px 15px;
+border-radius:8px;
+margin-left:5px;
+}
+
+.typing{
+font-style:italic;
+opacity:0.7;
+}
+
+@media (prefers-color-scheme: dark){
+
+body{
+background:#121212;
+color:white;
+}
+
+.ai .bubble{
+background:#1e1e1e;
+}
+
+#inputArea{
+background:#1e1e1e;
+}
+
+#text{
+background:#333;
+color:white;
+border:none;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+💬 RuangCurhat AI
+</header>
+
+<div id="chat">
+
+<div class="msg ai">
+<div class="avatar">AI</div>
+<div class="bubble">
+Halo 😊 aku AI RuangCurhat.  
+Aku siap mendengarkan cerita kamu.
+</div>
+</div>
+
+</div>
+
+<div id="inputArea">
+
+<input id="text" placeholder="Tulis curhatanmu...">
+
+<button onclick="kirim()">Kirim</button>
+
+</div>
+
+<script>
+
+function kirim(){
+
+let input=document.getElementById("text")
+
+let text=input.value.trim()
+
+if(text=="") return
+
+buatPesan(text,"user")
+
+input.value=""
+
+tampilkanTyping()
+
+setTimeout(function(){
+
+hapusTyping()
+
+let reply=balasanAI(text)
+
+buatPesan(reply,"ai")
+
+},1200)
+
+}
+
+function buatPesan(text,type){
+
+let chat=document.getElementById("chat")
+
+let msg=document.createElement("div")
+
+msg.className="msg "+type
+
+let avatar=""
+
+if(type=="ai"){
+avatar='<div class="avatar">AI</div>'
+}
+
+msg.innerHTML=avatar+'<div class="bubble">'+text+'</div>'
+
+chat.appendChild(msg)
+
+chat.scrollTop=chat.scrollHeight
+
+}
+
+function tampilkanTyping(){
+
+let chat=document.getElementById("chat")
+
+let typing=document.createElement("div")
+
+typing.className="msg ai"
+
+typing.id="typing"
+
+typing.innerHTML='<div class="avatar">AI</div><div class="bubble typing">AI sedang mengetik...</div>'
+
+chat.appendChild(typing)
+
+chat.scrollTop=chat.scrollHeight
+
+}
+
+function hapusTyping(){
+
+let t=document.getElementById("typing")
+
+if(t) t.remove()
+
+}
+
+function balasanAI(text){
+
+text=text.toLowerCase()
+
+if(text.includes("sedih")||text.includes("nangis"))
+return "Aku mengerti kamu sedang sedih 😔. Ceritakan apa yang terjadi, aku mendengarkan."
+
+if(text.includes("galau")||text.includes("bingung"))
+return "Perasaan galau memang tidak mudah. Kamu tidak sendirian."
+
+if(text.includes("capek")||text.includes("lelah"))
+return "Kelihatannya kamu sangat lelah hari ini. Istirahat juga penting."
+
+if(text.includes("marah"))
+return "Aku bisa memahami rasa marah itu. Tarik napas perlahan dulu ya."
+
+if(text.includes("senang")||text.includes("bahagia"))
+return "Aku ikut senang mendengarnya 😊 Ceritakan lebih banyak!"
+
+if(text.includes("stress")||text.includes("stres"))
+return "Stres memang berat. Kadang berbagi cerita bisa membuat hati lebih ringan."
+
+return "Aku di sini untuk mendengarkan kamu. Cerita lagi ya."
+
+}
+
+</script>
+
+</body>
+</html>
